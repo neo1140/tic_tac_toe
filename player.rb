@@ -16,7 +16,3 @@ class Player
   end
 end
 
-zach = Player.new('zach')
-anna = Player.new('anna')
-puts zach
-puts anna

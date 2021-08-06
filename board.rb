@@ -1,6 +1,6 @@
 # class for displaying and updating the board
 class Board
-  attr_reader :display
+  attr_reader :display, :positions
   def initialize
     @positions = [
       ' ', ' ', ' ',
@@ -17,7 +17,7 @@ class Board
     ── ─── ──
     #{@positions[6]} | #{@positions[7]} | #{@positions[8]}
     "
-    self.display
+    puts self.display
   end
 
   def update(position, value)
