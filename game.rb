@@ -1,6 +1,6 @@
 require_relative 'player'
 require_relative 'board'
-#class with game methods
+# class with game methods
 class Game
   attr_reader :player1, :player2
   def initialize
@@ -11,23 +11,23 @@ class Game
     puts 'Awesome! Have fun you two!!'
     game_start
   end
-#resets board state for new game
+# resets board state for new game
   def game_start
     @board = Board.new
     @board.build_board
     player1_turn
   end
-#starts a new game without requiring re-entering of usernames
+# starts a new game without requiring re-entering of usernames
   def new_game(player1, player2)
     @player1 = player2
     @player2 = player1
-    puts "Another round? this time #{@player1.name} is going first hit enter to start!"
+    puts "Another round? this time #{@player1.name} is going first! Hit enter to start!"
     gets
     game_start
   end
-#checks to see if a users move is a valid one
-  def is_valid?(choice)
-    if @board.positions[choice] == ' '
+# checks to see if a users move is a valid one
+  def valid?(choice)
+    if @board.positions[choice] == ' ' && choice >= 0
       true
     else
       false
@@ -37,7 +37,7 @@ class Game
   def player1_turn
     puts "#{player1.name} Choose where you would like to go in the grid!"
     choice = (gets.chomp.to_i - 1)
-    if is_valid?(choice)
+    if valid?(choice)
       @board.update(choice, player1.player_value)
       if victory?(player1)
         game_end(player1)
@@ -56,7 +56,7 @@ class Game
   def player2_turn
     puts "#{player2.name} Choose where you would like to go in the grid!"
     choice = (gets.chomp.to_i - 1)
-    if is_valid?(choice)
+    if valid?(choice)
       @board.update(choice, player2.player_value)
       if victory?(@player2)
         game_end(player2)
