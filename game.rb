@@ -15,7 +15,7 @@ class Game
   def game_start
     @board = Board.new
     @board.build_board
-    player1_turn
+    turn
   end
 # starts a new game without requiring re-entering of usernames
   def new_game(player1, player2)
@@ -33,42 +33,22 @@ class Game
       false
     end
   end
-# turn method for player one, refactor the two turn methods into one?
-  def player1_turn
-    puts "#{player1.name} Choose where you would like to go in the grid!"
+# turn method
+  def turn(last_player=nil)
+    current_player = @player2 if last_player == @player1
+    current_player = @player1 if last_player == @player2
+    current_player = @player1 if last_player == nil
+    puts "#{current_player.name} Choose where you would like to go in the grid!"
     choice = (gets.chomp.to_i - 1)
     if valid?(choice)
-      @board.update(choice, player1.player_value)
-      if victory?(player1)
-        game_end(player1)
+      @board.update(choice, current_player.player_value)
+      if victory?(current_player)
+        game_end(current_player)
       elsif self.game_end_tie?
         self.game_end('tie')
       else
-      player2_turn
+        turn(current_player)
       end
-    else
-      puts 'Invalid selection, please try again!'
-      @board.display
-      player1_turn
-    end
-  end
-# turn method for player two, refactor the two turn methods into one?
-  def player2_turn
-    puts "#{player2.name} Choose where you would like to go in the grid!"
-    choice = (gets.chomp.to_i - 1)
-    if valid?(choice)
-      @board.update(choice, player2.player_value)
-      if victory?(@player2)
-        game_end(player2)
-      elsif self.game_end_tie?
-        self.game_end('tie')
-      else
-      player1_turn
-      end
-    else
-      puts 'Invalid selection, please try again!'
-      @board.display
-      player2_turn
     end
   end
 # check to see if the game has ended in a tie
