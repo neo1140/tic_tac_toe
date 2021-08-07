@@ -1,1 +1,2 @@
-puts 0.even?
+require_relative "game"
+game = Game.new

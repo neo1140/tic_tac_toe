@@ -11,13 +11,13 @@ class Game
     puts 'Awesome! Have fun you two!!'
     game_start
   end
-
+#resets board state for new game
   def game_start
     @board = Board.new
     @board.build_board
     player1_turn
   end
-
+#starts a new game without requiring re-entering of usernames
   def new_game(player1, player2)
     @player1 = player2
     @player2 = player1
@@ -25,7 +25,7 @@ class Game
     gets
     game_start
   end
-
+#checks to see if a users move is a valid one
   def is_valid?(choice)
     if @board.positions[choice] == ' '
       true
@@ -33,13 +33,13 @@ class Game
       false
     end
   end
-
+# turn method for player one, refactor the two turn methods into one?
   def player1_turn
     puts "#{player1.name} Choose where you would like to go in the grid!"
     choice = (gets.chomp.to_i - 1)
     if is_valid?(choice)
       @board.update(choice, player1.player_value)
-      if victory?
+      if victory?(player1)
         game_end(player1)
       elsif self.game_end_tie?
         self.game_end('tie')
@@ -52,13 +52,13 @@ class Game
       player1_turn
     end
   end
-
+# turn method for player two, refactor the two turn methods into one?
   def player2_turn
     puts "#{player2.name} Choose where you would like to go in the grid!"
     choice = (gets.chomp.to_i - 1)
     if is_valid?(choice)
       @board.update(choice, player2.player_value)
-      if victory?
+      if victory?(@player2)
         game_end(player2)
       elsif self.game_end_tie?
         self.game_end('tie')
@@ -71,7 +71,7 @@ class Game
       player2_turn
     end
   end
-
+# check to see if the game has ended in a tie
   def game_end_tie?
     if @board.positions.include?(' ')
       return false
@@ -79,11 +79,12 @@ class Game
       return true
     end
   end
-
-  def victory?
+# check to see if the game has ended in victory
+  def victory?(player)
     false
+    true if @board.win_states.include?(player.player_value * 3)
   end
-
+# method to end the game if a game ending condition is met
   def game_end(condition)
     if condition == 'tie'
       puts "It's a tie! good game you two, enter 'y' if you want to play another round!"
@@ -104,4 +105,3 @@ class Game
     end
   end
 end
-game = Game.new
